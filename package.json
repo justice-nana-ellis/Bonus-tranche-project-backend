@@ -1,0 +1,67 @@
+{
+  "name": "re-tranche",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/cds-typer": "^0.19.0",
+    "@sap/cds": "^7",
+    "@sap/cds-hana": "^2",
+    "@sap/cds-odata-v2-adapter-proxy": "^1.9.21",
+    "@sap/xssec": "^3",
+    "@types/express": "^4.17.21",
+    "cds-routing-handlers": "^3.0.7",
+    "express": "^4.19.2",
+    "passport": "^0",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^7",
+    "typescript": "^5.4.3"
+  },
+  "scripts": {
+    "start": "npx -p @sap/cds-dk cds-serve --profile production",
+    "watch": "npx cds-ts watch",
+    "db:sqlite": "npx cds deploy -2 sqlite:./db.sqlite",
+    "generate-types": "npx @cap-js/cds-typer ./srv/index.cds --outputDirectory ./@cds-models",
+    "build-mta": "mbt build -t gen --mtar mta.tar",
+    "build:cf": "npm run build:cds && npm run cleanup:ts && npm run build:ts",
+    "build:ts": "npx tsc",
+    "build:cds": "cds build --production",
+    "cleanup:ts": "npx rimraf -v -g gen/srv/srv/**/*.ts",
+    "deploy": "npm i && npm run build-mta && cf deploy gen/mta.tar --delete-services --abort-on-error && npm i",
+    "start-fe": "cd ./re-tranche && npm run start"
+  },
+  "imports": {
+    "#cds-models/*": "./@cds-models/*/index.js"
+  },
+  "cds": {
+    "requires": {
+      "[production]": {
+        "db": "hana",
+        "auth": {
+          "kind": "basic-auth",
+          "users": {
+            "USER": {
+              "password": "123456",
+              "roles": [
+                "USER"
+              ],
+              "ID": "USER@example.com",
+              "userId": "765d90c4-77e3-47c9-b5c5-374ed9fde7d2",
+              "firstName": "USER",
+              "lastName": "USER",
+              "fullName": "USER",
+              "email": "USER@example.com"
+            }
+          }
+        }
+      }
+    }
+  }
+}
