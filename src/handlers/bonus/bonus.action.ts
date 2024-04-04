@@ -1,5 +1,8 @@
-import { Action, Handler, ParamObj, Req } from 'cds-routing-handlers';
-import { Employee, Employee_ } from '../../../@cds-models/com/bonus/employee';
+import "reflect-metadata";
+
+
+import { Action, Handler, Req } from 'cds-routing-handlers';
+import { Employee_ } from '../../../@cds-models/com/bonus/employee';
 import { Bonus } from '../../../@cds-models/com/bonus/bonus';
 import { Participant } from '../../../@cds-models/com/bonus/participant';
 import { Department } from '../../../@cds-models/com/bonus/department';
@@ -8,14 +11,12 @@ import cds, { Request } from '@sap/cds';
 import { Service } from 'typedi';
 
 const logger =  cds.log('createBonus');
-//@ts-ignore
+
 @Handler()
 @Service()
 export class BonusActionHandler {
-  //@ts-ignore
   @Action('createbonus')
   public async createBonus (
-    //@ts-ignore
     @Req() req: Request,
   ) : Promise<any> {
     logger.info('Create Bonus Handler')
@@ -27,15 +28,14 @@ export class BonusActionHandler {
       const insertedBonus = await SELECT.from(Bonus).where({
         ID: result.ID,
       });
-      //console.log("INSERTED BONUS",insertedBonus[0].ID);
     
      targets.map(async(target_: any) => {      
          target_.bonus_ID = insertedBonus[0].ID
-         const [result] = await INSERT.into(Target).entries(target_);
+         await INSERT.into(Target).entries(target_);
       });
 
      const employees = await SELECT.from(Employee_.name);
-     //console.log('EMPLOYEES!!!!!!!', employees);
+
       for (let i = 0; i <= employees.length-1; i++) {
            const employee_department = await SELECT.from(Department.name).where({
            ID: employees[i].department_ID,
@@ -60,9 +60,75 @@ export class BonusActionHandler {
       }
       return "Bonus & Participants Created Successfully 🎊";
     } catch (error) {
-      //console.log(error);
-      
+      logger.error('Error in createbonus:', error);
+      throw error;
     }
-    
   }
 }
+
+
+@Handler()
+@Service()
+export class EditBonusHandler {
+  @Action('editbonus')
+  public async editBonus (
+    @Req() req: Request,
+  ) : Promise<any> {
+    logger.info('Edit Bonus Handler')
+    try {
+      const bonus = { ...req.data };
+      const targets = bonus?.target;
+      await UPDATE(Bonus.name, bonus.id).with({ ...req.data });
+      
+      await SELECT.from(Bonus.name).where({
+        ID: bonus.id,
+      });
+      
+      await DELETE(Target).where({
+        bonus_ID: bonus.id,
+      });
+
+      targets.map(async(target_: any) => {      
+        target_.bonus_ID = bonus.id
+        await INSERT.into(Target).entries(target_);
+      });
+    
+      return "Bonus & Targets Edit Successfully 🎊";
+    } catch (error) {
+      logger.error('Error in editbonus:', error);
+      throw error;
+    }
+  }
+}
+
+@Handler()
+@Service()
+export class DeleteBonusHandler {
+  @Action('deletebonus')
+  public async deleteBonus (
+    @Req() req: Request,
+  ) : Promise<any> {
+    logger.info('Delete Bonus Handler')
+    try {
+      const bonus = { ...req.data };
+    
+      await DELETE(Bonus).where({
+        ID: bonus.id,
+      });
+      
+      await DELETE(Target).where({
+        bonus_ID: bonus.id,
+      });
+
+      await DELETE(Participant).where({
+        bonus_ID: bonus.id,
+      });
+    
+      return "Bonus & Targets Delete Successfully 🎊";
+    } catch (error) {
+      logger.error('Error in deletebonus:', error);
+      throw error;
+    }
+  }
+}
+

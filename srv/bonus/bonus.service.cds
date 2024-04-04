@@ -25,6 +25,22 @@ service BonusService @(path: '/bonus') {
         target: many Target
     ) returns String;
 
+    action editbonus (
+        id: String,
+        name: String,
+        location: String,
+        status: String,
+        beginDate: String,
+        endDate: String,
+        description: String,
+        trancheWeight: Integer,
+        target: many Target
+    ) returns String;
+
+    action deletebonus (
+        id: String
+    ) returns String;
+
     action create_participant (
         localId: String,
         name: String,

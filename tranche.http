@@ -1,14 +1,10 @@
 
 ###
 # FETCH TARGET
-GET http://localhost:4004/bonus/Target?$expand=bonus
-
+GET http://localhost:4004/bonus/Target
 ###
 # FETCH BONUS
 GET http://localhost:4004/bonus/Bonus
-#?$expand=participant
-
-
 ###
 # create bonus
 POST http://localhost:4004/bonus/Bonus
@@ -56,9 +52,51 @@ Content-Type: application/json
     ]
 }
 
+
+###
+# edit bonus
+POST http://localhost:4004/bonus/editbonus
+Content-Type: application/json
+
+{
+    "id": "3b0d4004-627d-49f1-8454-40484b975d85",
+    "name": "ASTHOROS BOB SQUARE BONUS",
+    "location": "TOGO WONDERLAND",
+    "status": "running",
+    "beginDate": "2024-03-07",
+    "endDate": "2025-01-07",
+    "description": "HAMABNA BONO NULAND",
+    "trancheWeight": 46,
+    "target": [
+        {
+            "name": "DIET TARGET",
+            "weight": 90,
+            "achievement": 70
+        },
+        {
+            "name": "KING TARGET",
+            "weight": 90,
+            "achievement": 10
+        },
+        {
+            "name": "GUNNER TARGET",
+            "weight": 90,
+            "achievement": 110
+        }
+    ]
+}
+
+###
+# delete bonus
+POST http://localhost:4004/bonus/deletebonus
+Content-Type: application/json
+
+{
+    "id": "b65f34db-c302-4e4a-b602-a16097864a81"
+}
 ###
 # FETCH participants
-GET http://localhost:4004/bonus/Participant?$expand=bonus
+GET http://localhost:4004/bonus/Participant
 
 ###
 # create participants
