@@ -33,6 +33,8 @@
     "generate-types": "npx @cap-js/cds-typer ./srv/index.cds --outputDirectory ./@cds-models",
     "build-mta": "mbt build -t gen --mtar mta.tar",
     "build:cf": "npm run build:cds && npm run cleanup:ts && npm run build:ts",
+    "hybrid": "npx cds-ts watch --profile hybrid",
+    "bind": "cds add hana --for hybrid && cds deploy --to hana --profile hybrid",
     "build:ts": "npx tsc",
     "build:cds": "cds build --production",
     "cleanup:ts": "npx rimraf -v -g gen/srv/srv/**/*.ts",
@@ -63,6 +65,9 @@
             }
           }
         }
+      },
+      "[hybrid]": {
+        "db": "hana"
       }
     }
   }

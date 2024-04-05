@@ -1,7 +1,6 @@
 namespace com.bonus.participant;
 using com.bonus.bonus as bonus from '../bonus/bonus.model';
-// MORE ITEMS SHOULD BE ADDED FROM THE UI OF THE SPECIFICATION
-// FETCH ALL THE EMPLOYEES AND MAKE THEM PATICIPANTS
+
 entity Participant {
     key ID :                UUID @(Core.Computed : true);
     localId:                String;
@@ -15,8 +14,9 @@ entity Participant {
     weight:                 Double;
     calculated_amount:      Double;
     final_amount:           Double;
-    excluded:               Boolean;
+    excluded:               Boolean default false;
     justification:          String;
+    overruled:              Boolean default false; 
 }
 
 type Status : String enum {

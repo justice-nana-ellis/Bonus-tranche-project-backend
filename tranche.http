@@ -5,20 +5,6 @@ GET http://localhost:4004/bonus/Target
 ###
 # FETCH BONUS
 GET http://localhost:4004/bonus/Bonus
-###
-# create bonus
-POST http://localhost:4004/bonus/Bonus
-Content-Type: application/json
-
-{
-    "name": "SPONGE BOB SQUARE BONUS",
-    "location": "SALBO WONDERLAND",
-    "status": "running",
-    "beginDate": "2024-03-07",
-    "endDate": "2025-01-07",
-    "description": "PRO BONO NULAND",
-    "trancheWeight": 46
-}
 
 ###
 # create bonus
@@ -26,8 +12,8 @@ POST http://localhost:4004/bonus/createbonus
 Content-Type: application/json
 
 {
-    "name": "ASTHOROS BOB SQUARE BONUS",
-    "location": "NIARA WONDERLAND",
+    "name": "ASTHOROSI BOB SQUARE BONUS",
+    "location": "NIARAI WONDERLAND",
     "status": "running",
     "beginDate": "2024-03-07",
     "endDate": "2025-01-07",
@@ -52,17 +38,16 @@ Content-Type: application/json
     ]
 }
 
-
 ###
 # edit bonus
 POST http://localhost:4004/bonus/editbonus
 Content-Type: application/json
 
 {
-    "id": "3b0d4004-627d-49f1-8454-40484b975d85",
+    "id": "3e4853fc-88be-43a3-87d0-f453b66cb2bd",
     "name": "ASTHOROS BOB SQUARE BONUS",
     "location": "TOGO WONDERLAND",
-    "status": "running",
+    "status": "completed",
     "beginDate": "2024-03-07",
     "endDate": "2025-01-07",
     "description": "HAMABNA BONO NULAND",
@@ -133,3 +118,17 @@ Content-Type: application/json
 ###
 # FETCH Targets
 GET http://localhost:4004/bonus/Target
+# create Employee
+###
+POST http://localhost:4004/bonus/Employee
+Content-Type: application/json
+
+{
+    "first_name": "John",
+    "last_name": "Dingo",
+    "email": "johndoe@gmail.com",
+    "department_ID": "dcd78efb-0b9a-4a67-8960-99cc1a49d214",
+    "bonus_percentage": 50
+}
+
+
