@@ -3,7 +3,7 @@ import "reflect-metadata";
 
 import { Action, Handler, Req } from 'cds-routing-handlers';
 import { Employee_ } from '../../../@cds-models/com/bonus/employee';
-import { Bonus } from '../../../@cds-models/com/bonus/bonus';
+import { Bonu, Bonus } from '../../../@cds-models/com/bonus/bonus';
 import { Attendance } from '../../../@cds-models/com/bonus/attendance';
 import { Participant, Participant_ } from '../../../@cds-models/com/bonus/participant';
 import { Department } from '../../../@cds-models/com/bonus/department';
@@ -173,7 +173,7 @@ export class LockBonusHandler {
       const participants = await SELECT.from(Participant.name).where({
         bonus_ID: bonus.id
       });
-      let some = 0
+
       await Promise.all(
         participants.map(async(participant_: any) => {      
           const department_bonus = await SELECT.from(Department.name).where({ name: participant_.department });
@@ -181,8 +181,25 @@ export class LockBonusHandler {
           const attendance = await SELECT.from(Attendance.name).where({
             employee_ID: participant_.localId
           });
-          console.log(attendance)
+
+          let end_date = new Date(attendance[0].end_date);
+          let start_date = new Date(attendance[0].start_date);
+          const attendance_: number = (end_date.getTime() - start_date.getTime())/(1000 * 3600 * 24);
+
+          const bonus_: Bonu | any = await SELECT.from(Bonus).where({
+            ID: bonus.id
+          });
+          const payout = department_bonus[0].department_bonus * bonus_[0].trancheWeight
           
+          let tranche_start_date = new Date(bonus_.start_date)
+          let tranche_end_date = new Date(bonus_.end_date)
+          console.log(tranche_start_date);
+          console.log(tranche_end_date);
+          
+          
+          //const duration_ = 
+          //console.log("PAYOUT BONUS!",payout);
+  
         })
       );
       

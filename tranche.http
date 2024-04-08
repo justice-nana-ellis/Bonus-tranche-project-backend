@@ -76,7 +76,7 @@ POST http://localhost:4004/bonus/deletebonus
 Content-Type: application/json
 
 {
-    "id": "b65f34db-c302-4e4a-b602-a16097864a81"
+    "id": "954a5cf2-9089-4465-b876-986e2340370f"
 }
 ###
 # lock bonus
@@ -84,7 +84,7 @@ POST http://localhost:4004/bonus/lockbonus
 Content-Type: application/json
 
 {
-    "id": "c7ef1c94-6401-4fb9-86d4-f4acfa427fb4"
+    "id": "ea1e569b-1824-4c49-8d80-8d00d89b3c8a"
 }
 ###
 # exclude paticipants
