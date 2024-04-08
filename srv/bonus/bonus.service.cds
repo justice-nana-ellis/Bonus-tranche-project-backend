@@ -41,6 +41,21 @@ service BonusService @(path: '/bonus') {
         id: String
     ) returns String;
 
+    action lockbonus (
+        id: String
+    ) returns String;
+
+    action exclude (
+        id: String,
+        justification: String
+    ) returns String;
+
+    action override (
+        id: String,
+        amount: Double,
+        justification: String
+    ) returns String;
+
     action create_participant (
         localId: String,
         name: String,

@@ -5,7 +5,6 @@ GET http://localhost:4004/bonus/Target
 ###
 # FETCH BONUS
 GET http://localhost:4004/bonus/Bonus
-
 ###
 # create bonus
 POST http://localhost:4004/bonus/createbonus
@@ -44,7 +43,7 @@ POST http://localhost:4004/bonus/editbonus
 Content-Type: application/json
 
 {
-    "id": "3e4853fc-88be-43a3-87d0-f453b66cb2bd",
+    "id": "1cdd1600-4aa3-4343-981c-7a0bca08f6d6",
     "name": "ASTHOROS BOB SQUARE BONUS",
     "location": "TOGO WONDERLAND",
     "status": "completed",
@@ -80,9 +79,34 @@ Content-Type: application/json
     "id": "b65f34db-c302-4e4a-b602-a16097864a81"
 }
 ###
+# lock bonus
+POST http://localhost:4004/bonus/lockbonus
+Content-Type: application/json
+
+{
+    "id": "c7ef1c94-6401-4fb9-86d4-f4acfa427fb4"
+}
+###
+# exclude paticipants
+POST http://localhost:4004/bonus/exclude
+Content-Type: application/json
+
+{
+    "id": "0514c262-5a1f-4fd9-9c01-73c66b133b2f"
+}
+###
+# override payout
+POST http://localhost:4004/bonus/override
+Content-Type: application/json
+
+{
+    "id": "0514c262-5a1f-4fd9-9c01-73c66b133b2f",
+    "amount": 70000,
+    "justification": "Too fat for that amount"
+}
+###
 # FETCH participants
 GET http://localhost:4004/bonus/Participant
-
 ###
 # create participants
 POST http://localhost:4004/bonus/Participant
@@ -118,17 +142,6 @@ Content-Type: application/json
 ###
 # FETCH Targets
 GET http://localhost:4004/bonus/Target
-# create Employee
-###
-POST http://localhost:4004/bonus/Employee
-Content-Type: application/json
 
-{
-    "first_name": "John",
-    "last_name": "Dingo",
-    "email": "johndoe@gmail.com",
-    "department_ID": "dcd78efb-0b9a-4a67-8960-99cc1a49d214",
-    "bonus_percentage": 50
-}
 
 
