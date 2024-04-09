@@ -21,22 +21,21 @@ Content-Type: application/json
     "target": [
         {
             "name": "HEALTH TARGET",
-            "weight": 90,
+            "weight": 60,
             "achievement": 70
         },
         {
             "name": "QUEEN TARGET",
-            "weight": 90,
+            "weight": 10,
             "achievement": 10
         },
         {
             "name": "SONIPER TARGET",
-            "weight": 90,
+            "weight": 30,
             "achievement": 110
         }
     ]
 }
-
 ###
 # edit bonus
 POST http://localhost:4004/bonus/editbonus
@@ -84,7 +83,7 @@ POST http://localhost:4004/bonus/lockbonus
 Content-Type: application/json
 
 {
-    "id": "ea1e569b-1824-4c49-8d80-8d00d89b3c8a"
+    "id": "ba247312-9e1b-4d3b-bf81-e1ead886b539"
 }
 ###
 # exclude paticipants

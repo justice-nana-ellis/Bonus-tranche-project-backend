@@ -173,46 +173,55 @@ export class LockBonusHandler {
       const participants = await SELECT.from(Participant.name).where({
         bonus_ID: bonus.id
       });
-
+      let sum = 0;
+      const targets_: Target[] = await SELECT.from(Target.name).where({
+        bonus_ID: bonus.id
+      });
+      let sum_ = targets_.reduce((acc, target) => {
+        return acc + target.weight
+      }, 0)
+      
+      if (100 > sum_ || sum_ > 100) return "Target Weight must sum up to 100 ⚠️ "
+  
       await Promise.all(
-        participants.map(async(participant_: any) => {      
+        participants.map(async(participant_: any) => {   
           const department_bonus = await SELECT.from(Department.name).where({ name: participant_.department });
           //console.log("DEPARTMENT BONUS", department_bonus[0].department_bonus);
           const attendance = await SELECT.from(Attendance.name).where({
             employee_ID: participant_.localId
           });
 
-          let end_date = new Date(attendance[0].end_date);
-          let start_date = new Date(attendance[0].start_date);
-          const attendance_: number = (end_date.getTime() - start_date.getTime())/(1000 * 3600 * 24);
-
+          let end_ = new Date(attendance[0].end_date);
+          let start_ = new Date(attendance[0].start_date);
+          const attendance_: number = (end_.getTime() - start_.getTime())/(1000 * 3600 * 24);
+          
           const bonus_: Bonu | any = await SELECT.from(Bonus).where({
             ID: bonus.id
           });
-          const payout = department_bonus[0].department_bonus * bonus_[0].trancheWeight
           
-          let tranche_start_date = new Date(bonus_.start_date)
-          let tranche_end_date = new Date(bonus_.end_date)
-          console.log(tranche_start_date);
-          console.log(tranche_end_date);
+          const payout_ = department_bonus[0].department_bonus * bonus_[0].trancheWeight;
           
+          let start__ = new Date(bonus_[0].beginDate);
+          let end__ = new Date(bonus_[0].endDate);
+          const duration__: number = (end__.getTime() - start__.getTime())/(1000 * 3600 * 24);
           
-          //const duration_ = 
-          //console.log("PAYOUT BONUS!",payout);
-  
+          const ratio = attendance_/duration__
+
+          for (const i in targets_) {
+            let _payout_ = payout_ * ratio * targets_[i].achievement * targets_[i].weight;
+            sum += _payout_;
+          }
+          
+          // const calc_amt = targets_.reduce((acc, target) => {
+          //   const _payout_ = payout_ * ratio * target.achievement * target.weight
+          //   return acc + _payout_;
+          // }, 0);
+          console.log(sum);
+          // INSERT INTO THE PARTICIPANTS CALCULATED AMOUNT
         })
       );
+    
       
-      // for (const participant of participants) {
-      //   const department_bonus = await SELECT.from(Department.name).where({ name: participant.department });
-      //   //console.log("DEPARTMENT BONUS", department_bonus[0].department_bonus);
-        // const attendance = await SELECT.from(Attendance.name).where({
-        //   employee_ID: participant.localId
-        // });
-      //   console.log("ATTENDANCE!!", attendance[0]);
-        
-      // }
-      //console.log(participants);
             
       return "Bonus Locked Successfully 🔒🪘";
     } catch (error) {
