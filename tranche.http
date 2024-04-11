@@ -14,25 +14,25 @@ Content-Type: application/json
     "name": "ASTHOROSI BOB SQUARE BONUS",
     "location": "NIARAI WONDERLAND",
     "status": "running",
-    "beginDate": "2024-03-07",
-    "endDate": "2025-01-07",
+    "beginDate": "2022-12-07",
+    "endDate": "2023-10-07",
     "description": "HAMABNA BONO NULAND",
-    "trancheWeight": 46,
+    "trancheWeight": 6,
     "target": [
         {
             "name": "HEALTH TARGET",
             "weight": 60,
-            "achievement": 70
+            "achievement": 2
         },
         {
             "name": "QUEEN TARGET",
             "weight": 10,
-            "achievement": 10
+            "achievement": 4
         },
         {
             "name": "SONIPER TARGET",
             "weight": 30,
-            "achievement": 110
+            "achievement": 2
         }
     ]
 }
@@ -83,7 +83,7 @@ POST http://localhost:4004/bonus/lockbonus
 Content-Type: application/json
 
 {
-    "id": "ba247312-9e1b-4d3b-bf81-e1ead886b539"
+    "id": "6a24a82d-f760-478a-95f6-728ad09c6680"
 }
 ###
 # exclude paticipants

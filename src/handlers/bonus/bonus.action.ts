@@ -179,50 +179,69 @@ export class LockBonusHandler {
       });
       let sum_ = targets_.reduce((acc, target) => {
         return acc + target.weight
-      }, 0)
+      }, 0);
       
-      if (100 > sum_ || sum_ > 100) return "Target Weight must sum up to 100 ⚠️ "
+      if (100 > sum_ || sum_ > 100) return "Target Weight must sum up to 100 ⚠️"
   
       await Promise.all(
         participants.map(async(participant_: any) => {   
           const department_bonus = await SELECT.from(Department.name).where({ name: participant_.department });
-          //console.log("DEPARTMENT BONUS", department_bonus[0].department_bonus);
           const attendance = await SELECT.from(Attendance.name).where({
             employee_ID: participant_.localId
           });
-
+          // employee general attendance
           let end_ = new Date(attendance[0].end_date);
           let start_ = new Date(attendance[0].start_date);
-          const attendance_: number = (end_.getTime() - start_.getTime())/(1000 * 3600 * 24);
           
           const bonus_: Bonu | any = await SELECT.from(Bonus).where({
             ID: bonus.id
           });
           
-          const payout_ = department_bonus[0].department_bonus * bonus_[0].trancheWeight;
+          const payout_ = department_bonus[0].department_bonus * (bonus_[0].trancheWeight/100);
+          console.log("PAYOUT",payout_);
           
+          // duration of taranche
           let start__ = new Date(bonus_[0].beginDate);
           let end__ = new Date(bonus_[0].endDate);
-          const duration__: number = (end__.getTime() - start__.getTime())/(1000 * 3600 * 24);
+          const duration__: any = (end__.getTime() - start__.getTime())/(1000 * 3600 * 24);
           
-          const ratio = attendance_/duration__
+          let start___;
+          let end___;
+          console.log("B-S",start__, "B.E", end__, "A.S",start_, "A.E",end_);
+          
+          if ( start_ < start__ && start__ < end_) {
+            start___ = start__
+          } else if (start__ < start_ && start_ < end__) {
+            start___ = start_ 
+          } else if (start__ === start_) {
+            start___ = start_ 
+          } 
 
-          for (const i in targets_) {
-            let _payout_ = payout_ * ratio * targets_[i].achievement * targets_[i].weight;
-            sum += _payout_;
-          }
+          if(end__ > end_) {
+            end___ = end_
+          } else if (end__ < end_) {
+            end___ = end__
+          } else {
+            end___ = end_
+          } 
+          //console.log("THE END", end___);
           
-          // const calc_amt = targets_.reduce((acc, target) => {
-          //   const _payout_ = payout_ * ratio * target.achievement * target.weight
-          //   return acc + _payout_;
-          // }, 0);
-          console.log(sum);
-          // INSERT INTO THE PARTICIPANTS CALCULATED AMOUNT
+          start___ = new Date(start___)
+          end___ = new Date(end___)
+          let att_dur_tranche: number = (end___.getTime() - start___.getTime())/(1000 * 3600 * 24);
+          
+          const ratio = att_dur_tranche/duration__
+          //console.log("BONUS RATIO",ratio);
+          
+          const sum = targets_.reduce((acc, target) => {
+            return acc + (payout_ * ratio * target.achievement * (target.weight/100));
+          }, 0);
+          //console.log("SUM", sum);
+          
+          await UPDATE(Participant.name, participant_.ID).with({ calculated_amount: Math.floor(sum) });
         })
       );
     
-      
-            
       return "Bonus Locked Successfully 🔒🪘";
     } catch (error) {
       logger.error('Error in lockbonus:', error);
