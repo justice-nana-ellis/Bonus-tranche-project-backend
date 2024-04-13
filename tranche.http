@@ -17,7 +17,7 @@ Content-Type: application/json
     "beginDate": "2022-12-07",
     "endDate": "2023-10-07",
     "description": "HAMABNA BONO NULAND",
-    "trancheWeight": 6,
+    "trancheWeight": 65,
     "target": [
         {
             "name": "HEALTH TARGET",
@@ -83,7 +83,7 @@ POST http://localhost:4004/bonus/lockbonus
 Content-Type: application/json
 
 {
-    "id": "6a24a82d-f760-478a-95f6-728ad09c6680"
+    "id": "de3e9e57-3556-4250-806e-b927229e5b35"
 }
 ###
 # exclude paticipants
@@ -91,7 +91,7 @@ POST http://localhost:4004/bonus/exclude
 Content-Type: application/json
 
 {
-    "id": "0514c262-5a1f-4fd9-9c01-73c66b133b2f"
+    "id": "0050ef4f-f251-4814-a5c9-e089f7666a35"
 }
 ###
 # override payout
@@ -99,7 +99,7 @@ POST http://localhost:4004/bonus/override
 Content-Type: application/json
 
 {
-    "id": "0514c262-5a1f-4fd9-9c01-73c66b133b2f",
+    "id": "0050ef4f-f251-4814-a5c9-e089f7666a35",
     "amount": 70000,
     "justification": "Too fat for that amount"
 }

@@ -234,7 +234,7 @@ export class LockBonusHandler {
           //console.log("BONUS RATIO",ratio);
           
           const sum = targets_.reduce((acc, target) => {
-            return acc + (payout_ * ratio * target.achievement * (target.weight/100));
+            return acc + (payout_ * ratio * (target.achievement/100) * (target.weight/100));
           }, 0);
           //console.log("SUM", sum);
           
