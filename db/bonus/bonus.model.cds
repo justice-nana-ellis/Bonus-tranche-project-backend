@@ -1,9 +1,9 @@
 namespace com.bonus.bonus;
 using com.bonus.target as target from '../target/target.model';
 using com.bonus.participant as participant from '../participant/participant.model';
-using { managed } from '@sap/cds/common';
+using { managed, cuid } from '@sap/cds/common';
 
-entity Bonus : managed {
+entity Bonus : managed, cuid {
     key ID:         UUID @(Core.Computed : true);
     name:           String;
     location:       String;

@@ -1,7 +1,9 @@
 namespace com.bonus.participant;
+using { cuid } from '@sap/cds/common';
+
 using com.bonus.bonus as bonus from '../bonus/bonus.model';
 
-entity Participant {
+entity Participant: cuid {
     key ID :                UUID @(Core.Computed : true);
     localId:                String;
     name:                   String;

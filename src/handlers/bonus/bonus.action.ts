@@ -10,6 +10,7 @@ import { Department } from '../../../@cds-models/com/bonus/department';
 import { Target } from '../../../@cds-models/com/bonus/target';
 import cds, { Request, log } from '@sap/cds';
 import { Service } from 'typedi';
+import { start } from "repl";
 
 const logger =  cds.log('Bonus Handlers 🪘🌄');
 
@@ -29,20 +30,21 @@ export class BonusActionHandler {
       const insertedBonus = await SELECT.from(Bonus).where({
         ID: result.ID,
       });
-    
+      
      targets.map(async(target_: any) => {      
          target_.bonus_ID = insertedBonus[0].ID
          await INSERT.into(Target).entries(target_);
       });
 
-     const employees = await SELECT.from(Employee_.name);
-
+     //const employees = await SELECT.from(Employee_.name);
+     const employees = await cds.run(SELECT.from(Employee_));
+ 
       for (let i = 0; i <= employees.length-1; i++) {
            const employee_department = await SELECT.from(Department.name).where({
            ID: employees[i].department_ID,
          });
     
-         await INSERT.into(Participant.name).entries({
+        await INSERT.into(Participant.name).entries({
           localId: employees[i].ID,
           //@ts-ignore
           name: employees[i].first_name + " " + employees[i].last_name,
@@ -58,6 +60,7 @@ export class BonusActionHandler {
           calculated_amount: 0.00,
           justification: ""
         });
+        
       }
       return "Bonus & Participants Created Successfully 🪘🌄";
     } catch (error) {
@@ -173,7 +176,7 @@ export class LockBonusHandler {
       const participants = await SELECT.from(Participant.name).where({
         bonus_ID: bonus.id
       });
-      let sum = 0;
+      
       const targets_: Target[] = await SELECT.from(Target.name).where({
         bonus_ID: bonus.id
       });
@@ -190,8 +193,9 @@ export class LockBonusHandler {
             employee_ID: participant_.localId
           });
           // employee general attendance
-          let end_ = new Date(attendance[0].end_date);
-          let start_ = new Date(attendance[0].start_date);
+          console.log("attendance", attendance);
+          let attendance_end_date = new Date(attendance[0].end_date);
+          let attendance_start_date = new Date(attendance[0].start_date);
           
           const bonus_: Bonu | any = await SELECT.from(Bonus).where({
             ID: bonus.id
@@ -201,44 +205,80 @@ export class LockBonusHandler {
           console.log("PAYOUT",payout_);
           
           // duration of taranche
-          let start__ = new Date(bonus_[0].beginDate);
-          let end__ = new Date(bonus_[0].endDate);
-          const duration__: any = (end__.getTime() - start__.getTime())/(1000 * 3600 * 24);
+          let bonus_start_date: any = new Date(bonus_[0].beginDate);
+          let bonus_end_date : any = new Date(bonus_[0].endDate);
+          const duration__: number = Math.abs(bonus_end_date - bonus_start_date)/(1000 * 60 * 60 * 24);
+          console.log("DURATION",duration__);
           
-          let start___;
-          let end___;
-          console.log("B-S",start__, "B.E", end__, "A.S",start_, "A.E",end_);
-          
-          if ( start_ < start__ && start__ < end_) {
-            start___ = start__
-          } else if (start__ < start_ && start_ < end__) {
-            start___ = start_ 
-          } else if (start__ === start_) {
-            start___ = start_ 
+          let attendance_start_during_tranche: any;
+          let attendance_end_during_tranche: any;
+          console.log("B-S",bonus_start_date, "B.E", bonus_end_date, "A.S",attendance_start_date, "A.E",attendance_end_date);
+
+          if (bonus_start_date > attendance_start_date) {
+            //console.log("COMPARE START: ",bonus_start_date > attendance_start_date);
+            
+            //console.log("BONUS START AFTER ATTENDANCE START");
+            attendance_start_during_tranche = bonus_start_date
+          } 
+          if (attendance_start_date > bonus_start_date) {
+            //console.log("ATTENDANCE START BEFORE BONUS");
+            attendance_start_during_tranche = attendance_start_date 
           } 
 
-          if(end__ > end_) {
-            end___ = end_
-          } else if (end__ < end_) {
-            end___ = end__
-          } else {
-            end___ = end_
+         
+          
+          
+          if(bonus_end_date > attendance_end_date) {
+            //console.log("BONUS END AFTER ATTENDANCE END");
+            attendance_end_during_tranche = attendance_end_date
           } 
-          //console.log("THE END", end___);
           
-          start___ = new Date(start___)
-          end___ = new Date(end___)
-          let att_dur_tranche: number = (end___.getTime() - start___.getTime())/(1000 * 3600 * 24);
+          if (bonus_end_date < attendance_end_date) {
+            //console.log("ATTENDANCE END AFTER BONUS START");
+
+            attendance_end_during_tranche = bonus_end_date
+          } 
+          // else if (bonus_end_date === attendance_end_date) {
+          //   attendance_end_during_tranche = attendance_end_date
+          // } 
+          //console.log("THE START", attendance_start_during_tranche, "THE END", attendance_end_during_tranche);
           
-          const ratio = att_dur_tranche/duration__
-          //console.log("BONUS RATIO",ratio);
+          attendance_start_during_tranche= new Date(attendance_start_during_tranche)
+          attendance_end_during_tranche = new Date(attendance_end_during_tranche)
+          let att_dur_tranche: number = Math.abs(attendance_end_during_tranche - attendance_start_during_tranche)/(1000 * 3600 * 24);
+          console.log("ATTENDANCE DURING TRANCHE:", att_dur_tranche);
+
+          let ratio ;
+          if ( attendance_start_date > bonus_end_date) {
+            ratio = 0
+          } else {
+            ratio = Math.abs(att_dur_tranche)/duration__ 
+          }
           
-          const sum = targets_.reduce((acc, target) => {
-            return acc + (payout_ * ratio * (target.achievement/100) * (target.weight/100));
-          }, 0);
-          //console.log("SUM", sum);
+          let calculated_amount = 0
+          console.log("Ratio",ratio);
+
+          for (let target in targets_) {
+            //console.log("THE 4 PAYOUT",(department_bonus[0].department_bonus * (bonus_[0].trancheWeight/100)));
+            
+             calculated_amount += ((department_bonus[0].department_bonus * (bonus_[0].trancheWeight/100)) * ratio * (targets_[target].achievement/100) * (targets_[target].weight/100));
+             //console.log("THE 4 CALCULATED AMOUNT",calculated_amount);
+             
+          }
+          console.log("FINAL CALCULATED AMOUNT!:", calculated_amount);
           
-          await UPDATE(Participant.name, participant_.ID).with({ calculated_amount: Math.floor(sum) });
+          // const sum = targets_.reduce((acc, target) => {
+          //   const payout: number = (department_bonus[0].department_bonus * (bonus_[0].trancheWeight/100))
+            
+          //   // console.log("PAYOUT-02" , (department_bonus[0].department_bonus * (bonus_[0].trancheWeight/100)));
+          //   // console.log("RATIO-02" , ratio);
+          //   // console.log("ACHEIVEMENT-02" , (target.achievement/100));
+          //   // console.log("WEIGHT-02" , (target.weight/100));
+          //   return acc + ( (department_bonus[0].department_bonus * (bonus_[0].trancheWeight/100)) * ratio * (target.achievement/100) * (target.weight/100));
+          // }, 0);
+          //console.log("SUM", Math.floor(calculated_amount));
+          
+          await UPDATE(Participant.name, participant_.ID).with({ calculated_amount: Math.floor(calculated_amount)});
         })
       );
     

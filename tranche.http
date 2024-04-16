@@ -11,28 +11,28 @@ POST http://localhost:4004/bonus/createbonus
 Content-Type: application/json
 
 {
-    "name": "ASTHOROSI BOB SQUARE BONUS",
+    "name": "Siera",
     "location": "NIARAI WONDERLAND",
     "status": "running",
-    "beginDate": "2022-12-07",
-    "endDate": "2023-10-07",
+    "beginDate": "2023-12-07",
+    "endDate": "2024-04-07",
     "description": "HAMABNA BONO NULAND",
     "trancheWeight": 65,
     "target": [
         {
             "name": "HEALTH TARGET",
             "weight": 60,
-            "achievement": 2
+            "achievement": 100
         },
         {
             "name": "QUEEN TARGET",
             "weight": 10,
-            "achievement": 4
+            "achievement": 100
         },
         {
             "name": "SONIPER TARGET",
             "weight": 30,
-            "achievement": 2
+            "achievement": 100
         }
     ]
 }
@@ -83,7 +83,7 @@ POST http://localhost:4004/bonus/lockbonus
 Content-Type: application/json
 
 {
-    "id": "de3e9e57-3556-4250-806e-b927229e5b35"
+    "id": "de9de85c-84fc-41f1-958d-89305e549655"
 }
 ###
 # exclude paticipants
@@ -115,7 +115,7 @@ Content-Type: application/json
     "localId": "c89d4d05-d1ea-4ce0-bbf6-1582292b68a9",
     "name": "HAN WILVOCK",
     "department": "Sale",
-    "bonus": "",
+    "bonus": "iuouioupouipoiu",
     "status": "running",
     "location": "NEW JERSEY",
     "startDate": "2023-11-02",
