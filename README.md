@@ -1,25 +1,37 @@
-# Getting Started
+# Bonus Tranche Application Backend
+This Application calculates the bonuses for employees in an organization based on metrics specified by the Finance Department.
 
-Welcome to your new project.
+#### Programming Language 
+- SAP Cloud Application Programming Module (CAPM)
+- JavaScript (Nodejs Runtime)
 
-It contains these folders and files, following our recommended project layout:
+#### Database
+- SAP Hana Database
 
-File or Folder | Purpose
----------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
+#### Deployment
+- Cloud Foundry
+
+#### Folder Structure
+.. this project follows the conventional structure for CAP projects
+`db/` | contains the domain models and data
+`srv/` | has the service models and code
 `package.json` | project metadata and configuration
-`readme.md` | this getting started guide
+`readme.md` | overview, setup instructions and additonal info
 
+#### Setting up the application 
 
-## Next Steps
+- Clone the application
+- In VS Code open a new terminal `npm i`and run `cds watch` 
 
-- Open a new terminal and run `cds watch` 
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
-
-
-## Learn More
+#### Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
+
+#### Formulas and Diagrams
+.. below is a high level diagram of how the employee bonuses were derived 
+
+![image-20230925-070511](https://github.com/user-attachments/assets/b0660562-5e46-41e0-8b9d-d246199a0900)
+
+![image-20230925-070456](https://github.com/user-attachments/assets/695e04c6-b930-4f94-b2a5-3179882b386b)
+
+
