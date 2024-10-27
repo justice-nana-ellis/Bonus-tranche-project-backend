@@ -10,6 +10,7 @@ This Application calculates the bonuses for employees in an organization based o
 
 #### Deployment
 - Cloud Foundry
+- SAP Business Technology Platform (BTP)
 
 #### Folder Structure
 .. this project follows the conventional structure for CAP projects
